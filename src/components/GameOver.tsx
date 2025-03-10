@@ -1,0 +1,74 @@
+import { useQuizContext } from "@/hooks/useQuizContext";
+import * as motion from "motion/react-client";
+import { useEffect, useState } from "react";
+import FlipCard from "./FlipCard/FlipCard";
+
+const GameOver = () => {
+  const { dispatch, state } = useQuizContext();
+  const [message, setMessage] = useState<string>("");
+  const [cardBgColor, setBgColor] = useState<string>("");
+
+  const setUserMessage = () => {
+    const percentage = (state.score / state.questions.length) * 100;
+
+    if (percentage <= 25) {
+      setMessage("Ainda tem muito para aprender. Tente novamente e melhore!");
+      setBgColor("#fb2c36");
+      return;
+    } else if (percentage <= 75) {
+      setMessage(
+        "Boa! Você quase chegou na excelência. Revise os detalhes e tente mais uma vez!"
+      );
+      setBgColor("#efb100");
+      return;
+    } else {
+      setMessage(
+        "Excelente! Você mandou muito bem. Continue assim e vai arrasar!"
+      );
+      setBgColor("#00bc7d");
+      return;
+    }
+  };
+
+  useEffect(() => {
+    setUserMessage();
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.4,
+        y: { type: "spring", visualDuration: 0.5, bounce: 0.5 },
+      }}
+      className="flex flex-col items-center gap-10"
+    >
+      <div className="text-center">
+        <h1 className="text-2xl">Fim de jogo</h1>
+        <p>
+          Você acertou {state.score} de {state.questions.length} perguntas!
+        </p>
+      </div>
+
+      <FlipCard bgColor={cardBgColor} message={message} />
+
+      <div className="flex gap-4">
+        <button
+          className="principal-button"
+          onClick={() => dispatch({ type: "NEW_GAME" })}
+        >
+          Reiniciar
+        </button>
+        <button
+          className="principal-button"
+          onClick={() => dispatch({ type: "NEW_GAME" })}
+        >
+          Finalizar
+        </button>
+      </div>
+    </motion.div>
+  );
+};
+
+export default GameOver;
