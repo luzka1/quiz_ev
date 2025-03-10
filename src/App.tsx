@@ -5,6 +5,7 @@ import { useQuizContext } from "@/hooks/useQuizContext";
 import Background from "./components/Background";
 import { useEffect } from "react";
 import GameOver from "./components/GameOver";
+import Parse from "parse";
 
 function App() {
   const { dispatch, state } = useQuizContext();
@@ -15,7 +16,7 @@ function App() {
 
   return (
     <div className="flex flex-col justify-center items-center overflow-hidden h-dvh max-h-dvh">
-      <Background color="#00bc7d" />
+      <Background color="#e60076" />
       {state.gameStage === "Start" && <Welcome />}
       {state.gameStage === "Playing" && <Quiz />}
       {state.gameStage === "End" && <GameOver />}
