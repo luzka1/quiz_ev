@@ -2,11 +2,13 @@ import { useQuizContext } from "@/hooks/useQuizContext";
 import * as motion from "motion/react-client";
 import { useEffect, useState } from "react";
 import FlipCard from "./FlipCard/FlipCard";
+import { useGameConfigContext } from "@/hooks/useConfigContext";
 
 const GameOver = () => {
   const { dispatch, state } = useQuizContext();
   const [message, setMessage] = useState<string>("");
   const [cardBgColor, setBgColor] = useState<string>("");
+  const { dataConfig } = useGameConfigContext();
 
   const setUserMessage = () => {
     const percentage = (state.score / state.questions.length) * 100;
@@ -56,7 +58,12 @@ const GameOver = () => {
       <div className="flex gap-4">
         <button
           className="principal-button"
-          onClick={() => dispatch({ type: "NEW_GAME" })}
+          onClick={() =>
+            dispatch({
+              type: "NEW_GAME",
+              payload: { questions: dataConfig.questions },
+            })
+          }
         >
           Reiniciar
         </button>

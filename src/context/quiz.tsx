@@ -7,14 +7,14 @@ interface IQuizContext {
 }
 
 interface IQuizState {
-  gameStage: "Start" | "Playing" | "End";
+  gameStage: "Start" | "Registering" | "Playing" | "End";
   questions: typeof questions;
   currentQuestion: number;
   score: number;
   answerSelected: boolean;
 }
 
-const STAGES = ["Start", "Playing", "End"] as const;
+const STAGES = ["Start", "Registering", "Playing", "End"] as const;
 
 const initialState: IQuizState = {
   gameStage: STAGES[0],
@@ -29,6 +29,12 @@ type QuizAction = { type: string; payload?: any };
 
 const quizReducer = (state: IQuizState, action: QuizAction) => {
   switch (action.type) {
+    case "SET_QUESTIONS":
+      return {
+        ...state,
+        questions: action.payload.questions,
+      };
+
     case "CHANGE_STATE":
       return {
         ...state,
@@ -36,7 +42,7 @@ const quizReducer = (state: IQuizState, action: QuizAction) => {
       };
 
     case "REORDER_QUESTIONS": {
-      const reorderedQuestions = questions.sort(() => {
+      const reorderedQuestions = state.questions.sort(() => {
         return Math.random() - 0.5;
       });
 
@@ -50,7 +56,7 @@ const quizReducer = (state: IQuizState, action: QuizAction) => {
       const nextQuestion = state.currentQuestion + 1;
       let endGame = false;
 
-      if (!questions[nextQuestion]) {
+      if (!state.questions[nextQuestion]) {
         endGame = true;
       }
 
@@ -62,8 +68,14 @@ const quizReducer = (state: IQuizState, action: QuizAction) => {
       };
     }
 
-    case "NEW_GAME":
-      return initialState;
+    case "NEW_GAME": {
+      const initialQuestions = action.payload.questions;
+
+      return {
+        ...initialState,
+        questions: initialQuestions,
+      };
+    }
 
     case "CHECK_ANSWER": {
       if (state.answerSelected) return state;

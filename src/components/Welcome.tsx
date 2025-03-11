@@ -2,7 +2,11 @@ import { useQuizContext } from "@/hooks/useQuizContext";
 import logo from "@/img/logo_quiz.png";
 import * as motion from "motion/react-client";
 
-const Welcome = () => {
+interface WelcomeProps {
+  companyName: string;
+}
+
+const Welcome = ({ companyName }: WelcomeProps) => {
   const { dispatch } = useQuizContext();
 
   return (
@@ -15,7 +19,7 @@ const Welcome = () => {
       }}
       className="flex flex-col text-center items-center gap-8"
     >
-      <h2>Nome da empresa contratante</h2>
+      <h2>{companyName}</h2>
 
       <h1 className="text-5xl">Seja Bem-vindo ao</h1>
 
