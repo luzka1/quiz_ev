@@ -2,7 +2,13 @@ import { motion } from "motion/react";
 import Card from "./UI/Card";
 import UserForm from "./UserForm";
 
-const Register = () => {
+const Register = ({
+  gameId,
+  allowGuest,
+}: {
+  gameId: string;
+  allowGuest: boolean;
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: 150 }}
@@ -15,8 +21,8 @@ const Register = () => {
     >
       <h1 className="text-2xl">Faça seu cadastro!</h1>
 
-      <Card className="w-[450px] h-[350px] max-w-[80vw] p-6 flex flex-col justify-between">
-        <UserForm />
+      <Card className="w-[450px] min-h-[350px] max-w-[80vw] p-6 flex flex-col justify-between">
+        <UserForm gameId={gameId} allowGuest={allowGuest} />
       </Card>
     </motion.div>
   );

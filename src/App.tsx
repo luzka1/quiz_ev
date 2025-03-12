@@ -11,7 +11,7 @@ import Register from "./components/Register";
 
 function App() {
   const { dispatch, state } = useQuizContext();
-  const { dataConfig, loading } = useGameConfigContext();
+  const { dataConfig, loading, configError } = useGameConfigContext();
   const [gameColor, setGameColor] = useState<string>("#000");
 
   useEffect(() => {
@@ -40,7 +40,14 @@ function App() {
 
   return (
     <div className="flex flex-col justify-center items-center overflow-hidden h-dvh max-h-dvh">
-      {loading ? (
+      {configError ? (
+        <div className="fixed h-screen w-full flex items-center justify-center bg-black">
+          <p>
+            Algum erro ocorreu com o aplicativo, por favor tente novamente mais
+            tarde!
+          </p>
+        </div>
+      ) : loading ? (
         <Loading />
       ) : (
         <>
@@ -48,7 +55,12 @@ function App() {
           {state.gameStage === "Start" && (
             <Welcome companyName={dataConfig.company_name} />
           )}
-          {state.gameStage === "Registering" && <Register />}
+          {state.gameStage === "Registering" && (
+            <Register
+              gameId={dataConfig.game_id}
+              allowGuest={dataConfig.allow_guest}
+            />
+          )}
           {state.gameStage === "Playing" && <Quiz />}
           {state.gameStage === "End" && <GameOver />}
         </>

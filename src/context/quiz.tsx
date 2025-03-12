@@ -35,11 +35,14 @@ const quizReducer = (state: IQuizState, action: QuizAction) => {
         questions: action.payload.questions,
       };
 
-    case "CHANGE_STATE":
+    case "CHANGE_STATE": {
+      const currentStage = STAGES.indexOf(state.gameStage);
+      const nextStage = (currentStage + 1) % STAGES.length;
       return {
         ...state,
-        gameStage: STAGES[1],
+        gameStage: STAGES[nextStage],
       };
+    }
 
     case "REORDER_QUESTIONS": {
       const reorderedQuestions = state.questions.sort(() => {
@@ -63,7 +66,7 @@ const quizReducer = (state: IQuizState, action: QuizAction) => {
       return {
         ...state,
         currentQuestion: nextQuestion,
-        gameStage: endGame ? STAGES[2] : state.gameStage,
+        gameStage: endGame ? STAGES[3] : state.gameStage,
         answerSelected: false,
       };
     }

@@ -65,13 +65,7 @@ const GameOver = () => {
             })
           }
         >
-          Reiniciar
-        </button>
-        <button
-          className="principal-button"
-          onClick={() => dispatch({ type: "NEW_GAME" })}
-        >
-          Finalizar
+          Jogar novamente
         </button>
       </div>
     </motion.div>
