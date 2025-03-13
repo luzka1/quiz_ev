@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import Parse from "parse";
 import questions from "@/data/questions";
 
@@ -13,6 +13,7 @@ interface IGameConfig {
 }
 
 interface IGameConfigContext {
+  fetchAppConfig: (game_id: string | null) => Promise<void>;
   dataConfig: IGameConfig;
   loading: boolean;
   configError: boolean;
@@ -31,13 +32,13 @@ export const GameConfigProvider = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [configError, setConfigError] = useState<boolean>(false);
 
-  const fetchAppConfig = async () => {
+  const fetchAppConfig = async (game_id: string | null) => {
     setLoading(true);
 
     // Simulação de carregamento
     await new Promise((resolve) => setTimeout(resolve, 1450));
     try {
-      const result = await Parse.Cloud.run("getConfig");
+      const result = await Parse.Cloud.run("getConfig", { game_id });
 
       if (result) {
         setDataConfig(result);
@@ -52,17 +53,9 @@ export const GameConfigProvider = ({
     }
   };
 
-  useEffect(() => {
-    fetchAppConfig();
-  }, []);
-
   return (
     <GameConfigContext.Provider
-      value={{
-        dataConfig,
-        loading,
-        configError,
-      }}
+      value={{ fetchAppConfig, dataConfig, loading, configError }}
     >
       {children}
     </GameConfigContext.Provider>

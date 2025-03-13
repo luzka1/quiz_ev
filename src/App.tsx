@@ -11,8 +11,19 @@ import Register from "./components/Register";
 
 function App() {
   const { dispatch, state } = useQuizContext();
-  const { dataConfig, loading, configError } = useGameConfigContext();
-  const [gameColor, setGameColor] = useState<string>("#000");
+  const { fetchAppConfig, dataConfig, loading, configError } =
+    useGameConfigContext();
+  const [gameParam, setGameParam] = useState<string | null>(null);
+
+  useEffect(() => {
+    const urlParam = new URLSearchParams(window.location.search);
+    const gameIdParam = urlParam.get("game_id");
+    setGameParam(gameIdParam ? gameIdParam : null);
+
+    if (gameParam) {
+      fetchAppConfig(gameParam);
+    }
+  }, [gameParam]);
 
   useEffect(() => {
     if (dataConfig?.questions) {
@@ -27,16 +38,15 @@ function App() {
   useEffect(() => {
     const ChangeGameColor = () => {
       if (dataConfig.game_color) {
-        setGameColor(dataConfig.game_color);
         document.documentElement.style.setProperty(
           "--principal-color",
-          gameColor
+          dataConfig.game_color
         );
       }
       return;
     };
     ChangeGameColor();
-  }, [dataConfig, gameColor]);
+  }, [dataConfig, dataConfig.game_color]);
 
   return (
     <div className="flex flex-col justify-center items-center overflow-hidden h-dvh max-h-dvh">
@@ -51,7 +61,7 @@ function App() {
         <Loading />
       ) : (
         <>
-          <Background color={gameColor} />
+          <Background color={dataConfig.game_color} />
           {state.gameStage === "Start" && (
             <Welcome companyName={dataConfig.company_name} />
           )}
