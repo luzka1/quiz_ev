@@ -17,6 +17,7 @@ interface IGameConfigContext {
   dataConfig: IGameConfig;
   loading: boolean;
   configError: boolean;
+  setConfigError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const GameConfigContext = createContext<IGameConfigContext>(
@@ -55,7 +56,13 @@ export const GameConfigProvider = ({
 
   return (
     <GameConfigContext.Provider
-      value={{ fetchAppConfig, dataConfig, loading, configError }}
+      value={{
+        fetchAppConfig,
+        dataConfig,
+        loading,
+        configError,
+        setConfigError,
+      }}
     >
       {children}
     </GameConfigContext.Provider>

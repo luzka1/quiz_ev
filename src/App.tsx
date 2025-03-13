@@ -11,7 +11,7 @@ import Register from "./components/Register";
 
 function App() {
   const { dispatch, state } = useQuizContext();
-  const { fetchAppConfig, dataConfig, loading, configError } =
+  const { fetchAppConfig, dataConfig, loading, configError, setConfigError } =
     useGameConfigContext();
   const [gameParam, setGameParam] = useState<string | null>(null);
 
@@ -21,9 +21,14 @@ function App() {
     setGameParam(gameIdParam ? gameIdParam : null);
 
     if (gameParam) {
+      setConfigError(false);
       fetchAppConfig(gameParam);
+    } else {
+      setConfigError(true);
     }
   }, [gameParam]);
+
+  console.log(gameParam);
 
   useEffect(() => {
     if (dataConfig?.questions) {
@@ -51,7 +56,7 @@ function App() {
   return (
     <div className="flex flex-col justify-center items-center overflow-hidden h-dvh max-h-dvh">
       {configError ? (
-        <div className="fixed h-screen w-full flex items-center justify-center bg-black">
+        <div className="fixed h-screen w-full flex items-center justify-center bg-black max-w-[90vw]">
           <p>
             Algum erro ocorreu com o aplicativo, por favor tente novamente mais
             tarde!
