@@ -48,7 +48,6 @@ const UserForm = ({
     e.preventDefault();
     try {
       const result = await Parse.Cloud.run("addPlayers", { game_id, value });
-      console.log(result);
       dispatch({ type: "CHANGE_STATE" });
     } catch (error) {
       console.log("Não foi possivel adicionar jogador!", error);
