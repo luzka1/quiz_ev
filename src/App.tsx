@@ -15,6 +15,8 @@ function App() {
     useGameConfigContext();
   const [gameParam, setGameParam] = useState<string | null>(null);
 
+  console.log(dataConfig);
+
   useEffect(() => {
     const urlParam = new URLSearchParams(window.location.search);
     const gameIdParam = urlParam.get("game_id");
@@ -27,8 +29,6 @@ function App() {
       setConfigError(true);
     }
   }, [gameParam]);
-
-  console.log(gameParam);
 
   useEffect(() => {
     if (dataConfig?.questions) {

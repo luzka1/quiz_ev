@@ -14,19 +14,15 @@ const GameOver = () => {
     const percentage = (state.score / state.questions.length) * 100;
 
     if (percentage <= 25) {
-      setMessage("Ainda tem muito para aprender. Tente novamente e melhore!");
+      setMessage(dataConfig.negative_message);
       setBgColor("#fb2c36");
       return;
     } else if (percentage <= 75) {
-      setMessage(
-        "Boa! Você quase chegou na excelência. Revise os detalhes e tente mais uma vez!"
-      );
+      setMessage(dataConfig.neutral_message);
       setBgColor("#efb100");
       return;
     } else {
-      setMessage(
-        "Excelente! Você mandou muito bem. Continue assim e vai arrasar!"
-      );
+      setMessage(dataConfig.positive_message);
       setBgColor("#00bc7d");
       return;
     }

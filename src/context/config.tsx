@@ -10,6 +10,9 @@ interface IGameConfig {
   company_link: string;
   allow_guest: boolean;
   questions: typeof questions;
+  negative_message: string;
+  neutral_message: string;
+  positive_message: string;
 }
 
 interface IGameConfigContext {
@@ -40,6 +43,8 @@ export const GameConfigProvider = ({
     await new Promise((resolve) => setTimeout(resolve, 1450));
     try {
       const result = await Parse.Cloud.run("getConfig", { game_id });
+
+      console.log(result);
 
       if (result) {
         setDataConfig(result);
